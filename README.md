@@ -26,7 +26,7 @@ all indices, which is 2nd January 2007.
 
 Higher is better.
 
-| Strategy          | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
+| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
 | UBAH              | 0.988788   | 0.99052    | 1.047257 | 1.072033 | 1.201552 | 1.599346 | 1.363545 |
 | UBAH Redistribute | 0.989475   | 0.994708   | 1.03414  | 1.040476 | 1.125178 | 1.487491 | 1.296974 |
@@ -39,7 +39,7 @@ Higher is better.
 
 Closer to zero is better.
 
-| Strategy          | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
+| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
 | UBAH              | -0.05823   | -0.06824   | -0.06824 | -0.09228 | -0.13334 | -0.13334 | -0.37363 |
 | UBAH Redistribute | -0.04073   | -0.05026   | -0.05026 | -0.08635 | -0.14736 | -0.14736 | -0.36618 |
