@@ -18,7 +18,7 @@
 
 # Performance
 
-Performance is based on the index funds / ETFs corresponding indexes. Performance is measured the time period
+Performance is based on the index funds / ETFs corresponding indexes. Performance is measured back in time by the time period
 specified, from 14th February 2020. For max we look at the performance since the first date we have prices for
 all indices, which is 2nd January 2007.
 
