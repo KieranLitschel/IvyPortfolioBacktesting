@@ -24,6 +24,8 @@ all indices, which is 2nd January 2007.
 
 ## Return on Investment
 
+Higher is better.
+
 | Strategy          | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
 | UBAH              | 0.988788   | 0.99052    | 1.047257 | 1.072033 | 1.201552 | 1.599346 | 1.363545 |
@@ -35,6 +37,8 @@ all indices, which is 2nd January 2007.
 
 ## Maximum Drawdown
 
+Closer to 0 is better.
+
 | Strategy          | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
 | UBAH              | -0.05823   | -0.06824   | -0.06824 | -0.09228 | -0.13334 | -0.13334 | -0.37363 |
@@ -43,6 +47,8 @@ all indices, which is 2nd January 2007.
 | GTAA              | -0.04605   | -0.06013   | -0.06013 | -0.06422 | -0.10309 | -0.10309 | -0.10344 |
 
 ## Sharpe Ratio
+
+Higher is better.
 
 | Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
