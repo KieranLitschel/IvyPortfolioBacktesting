@@ -6,11 +6,25 @@
 * GTAA - Global Tactical Asset Allocation as proposed in [A Quantitative Approach to Tactical Asset Allocation
 ](https://poseidon01.ssrn.com/delivery.php?ID=276073029008000083007122114088076120022037040029059051090103083007005091075067077077038055005012119033032068009088005064103126055081044083067125127028086097081026060017015031091105004107003127021113004123018086102115092104024121115127064064118029074&EXT=pdf)
 
+# Portfolio
+
+| Asset Class   | Fund                                        | Fund ISIN / Ticker Symbol | Index                                | Index ISIN    |
+|---------------|---------------------------------------------|---------------------------|--------------------------------------|---------------|
+| International | LEGAL & GENERAL INTERNATIONAL INDEX TRUST   | GB00BG0QP604              | FTSE ALL-WORLD EX UK IDX             | FTAWXUKSP:FSI |
+| UK            | LEGAL & GENERAL UK INDEX                    | GB00BG0QPJ30              | FTSE ALL-SHARE INDEX                 | FTASXS:FSI    |
+| Property      | ISHARES GLOBAL PROPERTY SECS. EQ. INDEX     | GB00BPFJCF57              | FTSE EPRA Nareit Developed REITs GBP | FTERGLS:FSI   |
+| Commodities   | WISDOMTREE BROAD COMMODITIES                | AGCP                      | Bloomberg Commodity Index            | BCOM:IOM      |
+| Bonds         | LEGAL & GENERAL ALL STOCKS GILT INDEX TRUST | GB00BG0QNV10              | FTSE Actuaries UK Conventional Gilts | BG05:FSI      |
+
 # Performance
+
+Performance is based on the index funds / ETFs corresponding indexes. Performance is measured the time period
+specified, from 14th February 2020. For max we look at the performance since the first date we have prices for
+all indices, which is 2nd January 2007.
 
 ## Return on Investment
 
-|                   | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
+| Strategy          | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
 | UBAH              | 0.988788   | 0.99052    | 1.047257 | 1.072033 | 1.201552 | 1.599346 | 1.363545 |
 | UBAH Redistribute | 0.989475   | 0.994708   | 1.03414  | 1.040476 | 1.125178 | 1.487491 | 1.296974 |
@@ -21,7 +35,7 @@
 
 ## Maximum Drawdown
 
-|                   | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
+| Strategy          | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
 | UBAH              | -0.05823   | -0.06824   | -0.06824 | -0.09228 | -0.13334 | -0.13334 | -0.37363 |
 | UBAH Redistribute | -0.04073   | -0.05026   | -0.05026 | -0.08635 | -0.14736 | -0.14736 | -0.36618 |
@@ -30,7 +44,7 @@
 
 ## Sharpe Ratio
 
-|                   | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
+| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
 | UBAH              | 69.19593   | 84.7639    | 36.40411 | 26.12956 | 12.03226 | 7.51062  | 6.07006  |
 | UBAH Redistribute | 85.29274   | 102.1937   | 47.95924 | 36.62082 | 14.8777  | 9.533399 | 6.96069  |
