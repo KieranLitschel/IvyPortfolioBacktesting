@@ -37,7 +37,7 @@ Higher is better.
 
 ## Maximum Drawdown
 
-Closer to 0 is better.
+Closer to zero is better.
 
 | Strategy          | 3.0 months | 6.0 months | 1 year   | 3 years  | 5 years  | 10 years | Max      |
 |-------------------|------------|------------|----------|----------|----------|----------|----------|
