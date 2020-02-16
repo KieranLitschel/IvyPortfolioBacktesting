@@ -209,7 +209,7 @@ def plot(all_prices_csv, all_roi_csv, output_dir):
         tablate_returns(dates, gtaa_perf).to_csv(os.path.join(output_dir, "GTAA.csv"))
         plt.legend()
         plt.title("{} to 2020".format(year))
-        plt.savefig(os.path.join(output_dir, "Returns.pdf"))
+        plt.savefig(os.path.join(output_dir, "Returns.png"))
         plt.clf()
         for allocations, name in [(allocations_ivy, "Timed Ivy"), (allocations_gtaa, "GTAA")]:
             dates = [allocation[0] for allocation in allocations]
@@ -219,5 +219,5 @@ def plot(all_prices_csv, all_roi_csv, output_dir):
             sns.heatmap(allocations_df)
             plt.title(name)
             plt.tight_layout()
-            plt.savefig(os.path.join(output_dir, "{} Allocations.pdf".format(name)))
+            plt.savefig(os.path.join(output_dir, "{} Allocations.png".format(name)))
             plt.clf()
