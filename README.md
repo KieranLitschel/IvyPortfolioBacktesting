@@ -13,7 +13,7 @@
 | International | LEGAL & GENERAL INTERNATIONAL INDEX TRUST   | GB00BG0QP604              | FTSE ALL-WORLD EX UK IDX             | FTAWXUKSP:FSI |
 | UK            | LEGAL & GENERAL UK INDEX                    | GB00BG0QPJ30              | FTSE ALL-SHARE INDEX                 | FTASXS:FSI    |
 | Property      | ISHARES GLOBAL PROPERTY SECS. EQ. INDEX     | GB00BPFJCF57              | FTSE EPRA Nareit Developed REITs GBP | FTERGLS:FSI   |
-| Commodities   | WISDOMTREE BROAD COMMODITIES                | AGCP                      | Bloomberg Commodity Index            | BCOM:IOM      |
+| Commodities   | BLACKROCK GOLD & GENERAL                | GB00B99BDY18                      |             |       |
 | Bonds         | LEGAL & GENERAL ALL STOCKS GILT INDEX TRUST | GB00BG0QNV10              | FTSE Actuaries UK Conventional Gilts | BG05:FSI      |
 
 # Performance
