@@ -45,7 +45,8 @@ class AverageReturns:
 
 def ubah(start_date, all_roi_csv, redistribute):
     roi = pd.read_csv(all_roi_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
-    values = [[0.2, 0.2, 0.2, 0.2, 0.2]]
+    assets = len(roi[0]) - 1
+    values = [[1 / assets for _ in range(assets)]]
     dates = [start_date]
     for i in range(len(roi)):
         date = roi[i][0]
@@ -87,8 +88,8 @@ def timed_ivy(start_date, all_roi_csv, all_price_csv):
         dates.append(date)
         if date.day == 1:
             best = sorted([(averages[j].value(), j) for j in range(len(averages))], key=lambda x: x[0], reverse=True)[
-                   :3]
-            to_distribute = sum(new_values) / 3 if new_values else 1 / 3
+                   :2]
+            to_distribute = sum(new_values) / 2 if new_values else 1 / 2
             new_values = [0, 0, 0, 0, 0, 0]
             for _, j in best:
                 # new_values[j] += to_distribute
@@ -177,7 +178,7 @@ def tablate_returns(dates, returns):
     end_date = dates[-1]
     periods = [("{} months".format(days / 30), end_date - datetime.timedelta(days=days)) for days in [90, 180]] + \
               [("{} year".format(years) + ("s" if years != 1 else ""), end_date - datetime.timedelta(days=365 * years))
-               for years in [1, 3, 5, 10]] + [("Max", dates[0])]
+               for years in [1, 3, 5]] + [("Max", dates[0])]
     metrics = ["ROI", "MDD", "SR"]
     results = [[] for _ in metrics]
     columns = [column_name for column_name, _ in periods]
@@ -191,9 +192,7 @@ def tablate_returns(dates, returns):
 
 
 def plot(all_prices_csv, all_roi_csv, output_dir):
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    for year in [2008]:
+    for year in [2012]:
         start_date = datetime.datetime(day=1, month=1, year=year)
         dates, ubah_perf = ubah(start_date, all_roi_csv, False)
         plt.plot(dates, ubah_perf, label="UBAH")
@@ -215,9 +214,24 @@ def plot(all_prices_csv, all_roi_csv, output_dir):
             dates = [allocation[0] for allocation in allocations]
             allocations = np.array([allocation[1] for allocation in allocations])
             allocations_df = pd.DataFrame(allocations, dates,
-                                          ["Commodities", "UK", "International", "Gov Bonds", "Property", "Cash"])
+                                          ["Commodities", "Gov Bonds", "International", "Property", "UK", "Cash"])
             sns.heatmap(allocations_df)
             plt.title(name)
             plt.tight_layout()
             plt.savefig(os.path.join(output_dir, "{} Allocations.png".format(name)))
             plt.clf()
+
+
+def plot_multi_manager(all_roi_csv, output_dir):
+    for year in [2006]:
+        start_date = datetime.datetime(day=1, month=3, year=year)
+        dates, ubah_perf = ubah(start_date, all_roi_csv, False)
+        plt.plot(dates, ubah_perf, label="UBAH")
+        tablate_returns(dates, ubah_perf).to_csv(os.path.join(output_dir, "UBAH.csv"))
+        dates, ubah_redis_perf = ubah(start_date, all_roi_csv, True)
+        plt.plot(dates, ubah_redis_perf, label="UBAH redistribute")
+        tablate_returns(dates, ubah_redis_perf).to_csv(os.path.join(output_dir, "UBAH redistribute.csv"))
+        plt.legend()
+        plt.title("{} to 2020".format(year))
+        plt.savefig(os.path.join(output_dir, "Returns.png"))
+        plt.clf()
