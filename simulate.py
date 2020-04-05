@@ -171,6 +171,7 @@ def roi(returns):
 
 
 def sharpe_ratio(returns):
+    returns = np.array([returns[i]/returns[i-1] if i != 0 else 1 for i in range(len(returns))]) - 1
     return (sum(returns) / len(returns)) / statistics.stdev(returns)
 
 
