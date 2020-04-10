@@ -22,7 +22,7 @@ Performance is based on the index funds / ETFs corresponding indicies. Performan
 specified, from 14th February 2020. For max we look at the performance back to the first date we have prices for
 all indices, which is 2nd January 2007.
 
-## Return on Investment
+## Cumulative Performance
 
 Higher is better.
 
