@@ -24,23 +24,29 @@ class SMA:
 class AverageReturns:
     def __init__(self):
         self.year = []
-        self.six_month = []
-        self.three_month = []
 
-    def add(self, change):
+    def add(self, date, change):
         if len(self.year) == 365:
             self.year.pop(0)
-        if len(self.six_month) == 180:
-            self.six_month.pop(0)
-        if len(self.three_month) == 90:
-            self.three_month.pop(0)
-        self.year.append(change)
-        self.six_month.append(change)
-        self.three_month.append(change)
+        self.year.append((date, change))
+
+    def n_month_return(self, n):
+        today = self.year[-1][0]
+        start_month = today.month - n
+        if start_month < 1:
+            start_month += 12
+        desired_start = self.year[-1][0].replace(month=start_month)
+        start_i = 0
+        for i in range(len(self.year)):
+            date, _ = self.year[i]
+            if date >= desired_start:
+                start_i = i
+                break
+        n_month_return = np.prod([change for _, change in self.year[start_i:]])
+        return n_month_return
 
     def value(self):
-        return ((self.year[-1] / self.year[0]) + (self.six_month[-1] / self.six_month[0]) + (
-                self.three_month[-1] / self.three_month[0])) / 3
+        return np.mean([self.n_month_return(n) for n in [3, 6, 12]])
 
 
 def ubah(start_date, all_roi_csv, redistribute):
@@ -48,6 +54,7 @@ def ubah(start_date, all_roi_csv, redistribute):
     assets = len(roi[0]) - 1
     values = [[1 / assets for _ in range(assets)]]
     dates = [start_date]
+    curr_month = None
     for i in range(len(roi)):
         date = roi[i][0]
         changes = [roi[i][j] for j in range(1, len(roi[i]))]
@@ -55,10 +62,11 @@ def ubah(start_date, all_roi_csv, redistribute):
             new_value = values[-1].copy()
             for j in range(len(new_value)):
                 new_value[j] *= changes[j]
-            if redistribute and date.day == 1 and date.month == 6:
+            if redistribute and date.month != curr_month and date.month == 6:
                 new_value = [sum(new_value) / len(changes) for _ in range(len(changes))]
             values.append(new_value)
             dates.append(date)
+            curr_month = date.month
     values = [sum(value) for value in values]
     return dates, values
 
@@ -72,11 +80,12 @@ def timed_ivy(start_date, all_roi_csv, all_price_csv):
     smas = [SMA(200) for _ in range(5)]
     new_values = None
     allocations = []
+    curr_month = None
     for i in range(len(roi)):
         date = roi[i][0]
         changes = [roi[i][j] for j in range(1, len(roi[i]))]
         for j in range(len(changes)):
-            averages[j].add(changes[j])
+            averages[j].add(date, changes[j])
         changes += [1]
         prices = [price[i][j] for j in range(1, len(price[i]))]
         for j in range(len(prices)):
@@ -86,7 +95,7 @@ def timed_ivy(start_date, all_roi_csv, all_price_csv):
         if date < start_date:
             continue
         dates.append(date)
-        if date.day == 1:
+        if date.month != curr_month:
             best = sorted([(averages[j].value(), j) for j in range(len(averages))], key=lambda x: x[0], reverse=True)[
                    :2]
             to_distribute = sum(new_values) / 2 if new_values else 1 / 2
@@ -98,6 +107,7 @@ def timed_ivy(start_date, all_roi_csv, all_price_csv):
                 else:
                     new_values[j] += to_distribute
             allocations.append((date, [new_value / sum(new_values) for new_value in new_values]))
+            curr_month = date.month
         values.append(new_values)
     values = [sum(value) for value in values]
     return dates, values, allocations
@@ -112,6 +122,7 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
     smas = [SMA(300) for _ in range(5)]
     new_values = None
     allocations = []
+    curr_month = None
     for i in range(len(roi)):
         date = roi[i][0]
         changes = [roi[i][j] for j in range(1, len(roi[i]))] + [1]
@@ -123,7 +134,7 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
         if date < start_date:
             continue
         dates.append(date)
-        if date.day == 1:
+        if date.month != curr_month:
             next_values = [0, 0, 0, 0, 0, 0]
             for j in range(5):
                 to_allocate = new_values[j] if new_values else 0.2
@@ -146,6 +157,7 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
                 new_values += [sum(to_allocate for value in new_values if value == 0)]
             allocations.append((date, [new_value / sum(new_values) for new_value in new_values]))
         values.append(new_values)
+        curr_month = date.month
     values = [sum(value) for value in values]
     return dates, values, allocations
 
@@ -171,7 +183,7 @@ def roi(returns):
 
 
 def sharpe_ratio(returns):
-    returns = np.array([returns[i]/returns[i-1] if i != 0 else 1 for i in range(len(returns))]) - 1
+    returns = np.array([returns[i] / returns[i - 1] if i != 0 else 1 for i in range(len(returns))]) - 1
     return (sum(returns) / len(returns)) / statistics.stdev(returns)
 
 
@@ -184,7 +196,12 @@ def tablate_returns(dates, returns):
     results = [[] for _ in metrics]
     columns = [column_name for column_name, _ in periods]
     for _, start in periods:
-        period_returns = returns[dates.index(start):]
+        start_i = 0
+        for i in range(len(dates)):
+            if dates[i] >= start:
+                start_i = i
+                break
+        period_returns = returns[start_i:]
         results[0].append(roi(period_returns))
         results[1].append(max_drawdown(period_returns))
         results[2].append(sharpe_ratio(period_returns))
@@ -194,7 +211,7 @@ def tablate_returns(dates, returns):
 
 def plot(all_prices_csv, all_roi_csv, output_dir):
     for year in [2012]:
-        start_date = datetime.datetime(day=1, month=1, year=year)
+        start_date = datetime.datetime(day=2, month=1, year=year)
         dates, ubah_perf = ubah(start_date, all_roi_csv, False)
         plt.plot(dates, ubah_perf, label="UBAH")
         tablate_returns(dates, ubah_perf).to_csv(os.path.join(output_dir, "UBAH.csv"))
