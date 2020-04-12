@@ -81,6 +81,7 @@ def timed_ivy(start_date, all_roi_csv, all_price_csv):
     new_values = None
     allocations = []
     curr_month = None
+    old_best = None
     for i in range(len(roi)):
         date = roi[i][0]
         changes = [roi[i][j] for j in range(1, len(roi[i]))]
@@ -96,16 +97,25 @@ def timed_ivy(start_date, all_roi_csv, all_price_csv):
             continue
         dates.append(date)
         if date.month != curr_month:
-            best = sorted([(averages[j].value(), j) for j in range(len(averages))], key=lambda x: x[0], reverse=True)[
-                   :2]
-            to_distribute = sum(new_values) / 2 if new_values else 1 / 2
-            new_values = [0, 0, 0, 0, 0, 0]
-            for _, j in best:
-                # new_values[j] += to_distribute
-                if prices[j] < smas[j].value():
-                    new_values[-1] += to_distribute
-                else:
+            best = sorted([j for _, j in sorted([(averages[j].value(), j) for j in range(len(averages))],
+                                                key=lambda x: x[0], reverse=True)[:2]])
+            if old_best != best:
+                to_distribute = sum(new_values) / 2 if new_values else 1 / 2
+                new_values = [0, 0, 0, 0, 0, 0]
+                for j in best:
                     new_values[j] += to_distribute
+            for j in best:
+                if prices[j] < smas[j].value():
+                    new_values[-1] += new_values[j]
+                    new_values[j] = 0
+                elif new_values[j] == 0:
+                    if sum(new_values[:-1]) != 0:  # need to change this if change from top-2 asset classes
+                        new_values[j] = new_values[-1]
+                        new_values[-1] = 0
+                    else:
+                        new_values[j] = new_values[-1] / 2
+                        new_values[-1] /= 2
+            old_best = best
             allocations.append((date, [new_value / sum(new_values) for new_value in new_values]))
             curr_month = date.month
         values.append(new_values)
