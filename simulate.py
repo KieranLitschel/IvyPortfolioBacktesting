@@ -129,7 +129,7 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
     values = []
     redistributed = -float('inf')
     dates = []
-    smas = [SMA(300) for _ in range(5)]
+    smas = [SMA(200) for _ in range(5)]
     new_values = None
     allocations = []
     curr_month = None
