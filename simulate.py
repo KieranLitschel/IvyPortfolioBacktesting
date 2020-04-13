@@ -127,7 +127,7 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
     roi = pd.read_csv(all_roi_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     price = pd.read_csv(all_price_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     values = []
-    redistributed = -float('inf')
+    redistributed = 0
     dates = []
     smas = [SMA(200) for _ in range(5)]
     new_values = None
@@ -221,7 +221,7 @@ def tablate_returns(dates, returns):
 
 def plot(all_prices_csv, all_roi_csv, output_dir):
     for year in [2012]:
-        start_date = datetime.datetime(day=2, month=1, year=year)
+        start_date = datetime.datetime(day=2, month=4, year=year)
         dates, ubah_perf = ubah(start_date, all_roi_csv, False)
         plt.plot(dates, ubah_perf, label="UBAH")
         tablate_returns(dates, ubah_perf).to_csv(os.path.join(output_dir, "UBAH.csv"))
