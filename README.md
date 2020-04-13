@@ -33,7 +33,7 @@ Higher is better.
 | Timed Ivy         | 0.967989 | 0.932305 | 1.001298 | 0.948778 | 1.199121 | 1.45074  |
 | GTAA              | 0.959114 | 0.960359 | 1.062685 | 1.034427 | 1.171118 | 1.394024 |
 
-![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Results/Returns.png "Return on Investment Graph")
+![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Index%20Results/Returns.png "Return on Investment Graph")
 
 ## Maximum Drawdown
 
@@ -61,8 +61,8 @@ Higher is better.
 
 ## Timed Ivy
 
-![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Results/Timed%20Ivy%20Allocations.png "Portfolio allocation % in each asset class for Timed Ivy")
+![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Index%20Results/Timed%20Ivy%20Allocations.png "Portfolio allocation % in each asset class for Timed Ivy")
 
 ## GTAA
 
-![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Results/GTAA%20Allocations.png "Portfolio allocation % in each asset class for GTAA")
+![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Index%20Results/GTAA%20Allocations.png "Portfolio allocation % in each asset class for GTAA")
