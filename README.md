@@ -16,7 +16,7 @@ for commodities we use an actively managed fund with experienced management.
 | International | LEGAL & GENERAL INTERNATIONAL INDEX TRUST   | GB00BG0QP604              | FTSE ALL-WORLD EX UK IDX             | FTAWXUKSP:FSI |
 | UK            | LEGAL & GENERAL UK INDEX                    | GB00BG0QPJ30              | FTSE ALL-SHARE INDEX                 | FTASXS:FSI    |
 | Property      | ISHARES GLOBAL PROPERTY SECS. EQ. INDEX     | GB00BPFJCF57              | FTSE EPRA Nareit Developed REITs GBP | FTERGLS:FSI   |
-| Commodities   | BLACKROCK GOLD & GENERAL                | GB00B99BDY18                      |             |       |
+| Commodities   | BLACKROCK NATURAL RESOURCES GROWTH & INCOME                | GB00B6865B79                      |             |       |
 | Bonds         | LEGAL & GENERAL ALL STOCKS GILT INDEX TRUST | GB00BG0QNV10              | FTSE Actuaries UK Conventional Gilts | BG05:FSI      |
 
 ## Performance
@@ -29,12 +29,12 @@ all indices.
 
 Higher is better.
 
-| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
+|                   | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
 |-------------------|----------|----------|----------|----------|----------|----------|
-| UBAH              | 0.81384  | 0.820818 | 0.887562 | 0.952717 | 1.155578 | 1.453527 |
-| UBAH Redistribute | 0.836974 | 0.839757 | 0.928272 | 0.963913 | 1.195091 | 1.431092 |
-| Timed Ivy         | 0.967989 | 0.932305 | 1.001298 | 0.948778 | 1.199121 | 1.45074  |
-| GTAA              | 0.959114 | 0.960359 | 1.062685 | 1.034427 | 1.171118 | 1.394024 |
+| UBAH              | 0.79779  | 0.809291 | 0.849515 | 0.92418  | 1.110097 | 1.426948 |
+| UBAH Redistribute | 0.804998 | 0.817241 | 0.852505 | 0.92245  | 1.109464 | 1.424169 |
+| Timed Ivy         | 0.944243 | 0.943943 | 0.973212 | 0.889193 | 1.05019  | 1.500188 |
+| GTAA              | 0.940413 | 0.945334 | 0.968493 | 0.939537 | 1.109518 | 1.360056 |
 
 ![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Index%20Results/Returns.png "Return on Investment Graph")
 
@@ -42,23 +42,23 @@ Higher is better.
 
 Closer to zero is better.
 
-| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
+|                   | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
 |-------------------|----------|----------|----------|----------|----------|----------|
-| UBAH              | -0.25751 | -0.25751 | -0.25751 | -0.25751 | -0.25751 | -0.25751 |
-| UBAH Redistribute | -0.23793 | -0.23793 | -0.23793 | -0.23793 | -0.23793 | -0.23793 |
-| Timed Ivy         | -0.13588 | -0.13588 | -0.14932 | -0.14932 | -0.17092 | -0.17325 |
-| GTAA              | -0.08962 | -0.08962 | -0.09205 | -0.09205 | -0.11799 | -0.11799 |
+| UBAH              | -0.2714  | -0.2714  | -0.2714  | -0.2714  | -0.2714  | -0.2714  |
+| UBAH Redistribute | -0.2684  | -0.2684  | -0.2684  | -0.2684  | -0.2684  | -0.2684  |
+| Timed Ivy         | -0.12832 | -0.12832 | -0.12832 | -0.20794 | -0.20794 | -0.20794 |
+| GTAA              | -0.08229 | -0.08229 | -0.08775 | -0.10437 | -0.10437 | -0.10437 |
 
 ### Sharpe Ratio
 
 Higher is better.
 
-| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
+|                   | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
 |-------------------|----------|----------|----------|----------|----------|----------|
-| UBAH              | -0.17784 | -0.11542 | -0.04317 | -0.00581 | 0.019974 | 0.031262 |
-| UBAH Redistribute | -0.13974 | -0.09291 | -0.0227  | -0.00313 | 0.02258  | 0.028368 |
-| Timed Ivy         | -0.03584 | -0.04825 | 0.005079 | -0.00656 | 0.020777 | 0.02662  |
-| GTAA              | -0.09119 | -0.04846 | 0.04417  | 0.012665 | 0.026984 | 0.036615 |
+| UBAH              | -0.19433 | -0.1233  | -0.06001 | -0.01102 | 0.015238 | 0.030756 |
+| UBAH Redistribute | -0.19136 | -0.12071 | -0.06063 | -0.01188 | 0.015349 | 0.031023 |
+| Timed Ivy         | -0.08413 | -0.05209 | -0.01156 | -0.02058 | 0.008942 | 0.033274 |
+| GTAA              | -0.16443 | -0.08762 | -0.02354 | -0.01787 | 0.020553 | 0.037382 |
 
 ## Portfolio Allocations by Asset Class
 
@@ -80,7 +80,7 @@ outperformed their index over many years.
 | International | FUNDSMITH EQUITY   | GB00B41YBW71              |             |  |
 | UK            | LF LINDSELL TRAIN UK EQUITY                    | GB00BJFLM156              |                  |    |
 | Property      | ISHARES GLOBAL PROPERTY SECS. EQ. INDEX     | GB00BPFJCF57              | FTSE EPRA Nareit Developed REITs GBP | FTERGLS:FSI   |
-| Commodities   | BLACKROCK GOLD & GENERAL                | GB00B99BDY18                      |             |       |
+| Commodities   | BLACKROCK NATURAL RESOURCES GROWTH & INCOME                | GB00B6865B79                      |             |       |
 | Bonds         | LEGAL & GENERAL ALL STOCKS GILT INDEX TRUST | GB00BG0QNV10              | FTSE Actuaries UK Conventional Gilts | BG05:FSI      |
 
 ## Performance
@@ -89,12 +89,12 @@ outperformed their index over many years.
 
 Higher is better.
 
-| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
+|                   | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
 |-------------------|----------|----------|----------|----------|----------|----------|
-| UBAH              | 0.863419 | 0.856924 | 0.938656 | 1.108426 | 1.427256 | 1.899295 |
-| UBAH Redistribute | 0.875001 | 0.860977 | 0.967284 | 1.071597 | 1.386497 | 1.757058 |
-| Timed Ivy         | 0.981578 | 0.948658 | 1.035267 | 1.189238 | 1.592074 | 2.04897  |
-| GTAA              | 0.989237 | 0.972695 | 1.092907 | 1.128631 | 1.316526 | 1.693898 |
+| UBAH              | 0.84578  | 0.844184 | 0.902313 | 1.074268 | 1.367042 | 1.939729 |
+| UBAH Redistribute | 0.843501 | 0.839332 | 0.890726 | 1.027345 | 1.293372 | 1.815477 |
+| Timed Ivy         | 0.945113 | 0.913838 | 0.956121 | 0.994676 | 1.222826 | 1.789389 |
+| GTAA              | 0.970349 | 0.956778 | 0.99767  | 1.026785 | 1.249766 | 1.672688 |
 
 ![alt text](https://github.com/KieranLitschel/PortfolioBacktesting/blob/master/Historical%20Prices/Active%20Results/Returns.png "Return on Investment Graph")
 
@@ -102,23 +102,23 @@ Higher is better.
 
 Closer to zero is better.
 
-| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
+|                   | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
 |-------------------|----------|----------|----------|----------|----------|----------|
-| UBAH              | -0.22148 | -0.22148 | -0.22217 | -0.22217 | -0.22217 | -0.22217 |
-| UBAH Redistribute | -0.21764 | -0.21764 | -0.22739 | -0.22739 | -0.22739 | -0.22739 |
-| Timed Ivy         | -0.12816 | -0.12816 | -0.15537 | -0.15537 | -0.15537 | -0.15537 |
-| GTAA              | -0.07141 | -0.07141 | -0.0952  | -0.0952  | -0.13708 | -0.13708 |
+| UBAH              | -0.23266 | -0.23266 | -0.23266 | -0.23266 | -0.23266 | -0.23266 |
+| UBAH Redistribute | -0.22735 | -0.22735 | -0.23213 | -0.23213 | -0.23213 | -0.23213 |
+| Timed Ivy         | -0.12854 | -0.12936 | -0.16266 | -0.16266 | -0.16266 | -0.16266 |
+| GTAA              | -0.05965 | -0.06863 | -0.08542 | -0.08542 | -0.08542 | -0.08792 |
 
 ### Sharpe Ratio
 
 Higher is better.
 
-| Strategy          | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
+|                   | 3 months | 6 months | 1 year   | 3 years  | 5 years  | Max      |
 |-------------------|----------|----------|----------|----------|----------|----------|
-| UBAH              | -0.12809 | -0.09123 | -0.02075 | 0.02242  | 0.043122 | 0.052511 |
-| UBAH Redistribute | -0.10893 | -0.08301 | -0.00787 | 0.016202 | 0.038239 | 0.044305 |
-| Timed Ivy         | -0.01892 | -0.03452 | 0.018872 | 0.034485 | 0.044906 | 0.047303 |
-| GTAA              | -0.02444 | -0.03429 | 0.063632 | 0.038342 | 0.042212 | 0.055435 |
+| UBAH              | -0.14642 | -0.10028 | -0.03635 | 0.016449 | 0.03819  | 0.054425 |
+| UBAH Redistribute | -0.16272 | -0.11357 | -0.04613 | 0.008549 | 0.033619 | 0.05153  |
+| Timed Ivy         | -0.07755 | -0.07974 | -0.01841 | 0.002437 | 0.02482  | 0.044474 |
+| GTAA              | -0.09952 | -0.07647 | 0.00036  | 0.010223 | 0.038873 | 0.05859  |
 
 ## Portfolio Allocations by Asset Class
 
