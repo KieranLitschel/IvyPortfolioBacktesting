@@ -21,7 +21,7 @@ for commodities we use an actively managed fund with experienced management.
 
 ## Performance
 
-Performance is based on the index funds / ETFs corresponding indicies. Performance is measured back in time by the time period
+Performance is based on the index funds corresponding indicies. Performance is measured back in time by the time period
 specified, from 14th February 2020. For max we look at the performance back to the first date we have prices for
 all indices.
 
