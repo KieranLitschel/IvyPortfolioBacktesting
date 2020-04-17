@@ -75,54 +75,56 @@ def ubah(start_date, all_roi_csv, redistribute, weights=None):
     return dates, values
 
 
-def timed_ivy(start_date, all_roi_csv, all_price_csv):
+def timed_ivy(start_date, all_roi_csv, all_price_csv, cash=-1, periods=None, max_n=2):
     roi = pd.read_csv(all_roi_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     price = pd.read_csv(all_price_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
+    no_assets = len(roi[0]) - 1
     values = []
     dates = []
-    averages = [AverageReturns() for _ in range(5)]
-    smas = [SMA(200) for _ in range(5)]
+    averages = [AverageReturns(periods=periods) for _ in range(no_assets)]
+    smas = [SMA(200) for _ in range(no_assets)]
     new_values = None
     allocations = []
     curr_month = None
     old_best = None
+    individual_cash = [0 for _ in range(no_assets)]
     for i in range(len(roi)):
         date = roi[i][0]
-        changes = [roi[i][j] for j in range(1, len(roi[i]))]
+        changes = [roi[i][j] for j in range(1, no_assets + 1)]
         for j in range(len(changes)):
             averages[j].add(date, changes[j])
-        changes += [1]
-        prices = [price[i][j] for j in range(1, len(price[i]))]
+        prices = [price[i][j] for j in range(1, no_assets + 1)]
         for j in range(len(prices)):
             smas[j].add(prices[j])
         if values:
-            new_values = [changes[j] * values[-1][j] for j in range(6)]
+            new_values = [changes[j] * values[-1][j] for j in range(no_assets)]
+            if cash != -1:
+                individual_cash = [asset_cash * changes[cash] for asset_cash in individual_cash]
         if date < start_date:
             continue
         dates.append(date)
         if date.month != curr_month:
             best = sorted([j for _, j in sorted([(averages[j].value(), j) for j in range(len(averages))],
-                                                key=lambda x: x[0], reverse=True)[:2]])
+                                                key=lambda x: x[0], reverse=True)[:max_n]])
             if old_best != best:
-                to_distribute = sum(new_values) / 2 if new_values else 1 / 2
-                new_values = [0, 0, 0, 0, 0, 0]
+                to_distribute = (sum(new_values) + sum(individual_cash)) / max_n if new_values else 1 / max_n
+                new_values = [0 for _ in range(no_assets)]
+                individual_cash = [0 for _ in range(no_assets)]
                 for j in best:
                     new_values[j] += to_distribute
             for j in best:
                 if prices[j] < smas[j].value():
-                    new_values[-1] += new_values[j]
+                    individual_cash[j] += new_values[j]
                     new_values[j] = 0
                 elif new_values[j] == 0:
-                    if sum(new_values[:-1]) != 0:  # need to change this if change from top-2 asset classes
-                        new_values[j] = new_values[-1]
-                        new_values[-1] = 0
-                    else:
-                        new_values[j] = new_values[-1] / 2
-                        new_values[-1] /= 2
+                    new_values[j] = individual_cash[j]
+                    individual_cash[j] = 0
             old_best = best
-            allocations.append((date, [new_value / sum(new_values) for new_value in new_values]))
+            total_wealth = sum(new_values) + sum(individual_cash)
+            allocations.append(
+                (date, [new_value / total_wealth for new_value in new_values] + [sum(individual_cash) / total_wealth]))
             curr_month = date.month
-        values.append(new_values)
+        values.append(new_values + [sum(individual_cash)])
     values = [sum(value) for value in values]
     return dates, values, allocations
 
@@ -131,51 +133,51 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv, cas
     roi = pd.read_csv(all_roi_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     price = pd.read_csv(all_price_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     values = []
-    redistributed = 0
     dates = []
     smas = [SMA(200) for _ in range(5)]
     new_values = None
     allocations = []
     curr_month = None
     no_assets = len(roi[0]) - 1
+    individual_cash = [0 for _ in range(no_assets)]
     for i in range(len(roi)):
         date = roi[i][0]
-        changes = [roi[i][j] for j in range(1, no_assets + 1)] + [1 if cash == -1 else roi[i][cash]]
+        changes = [roi[i][j] for j in range(1, no_assets + 1)]
         prices = [price[i][j] for j in range(1, no_assets + 1)]
         for j in range(len(prices)):
             smas[j].add(prices[j])
         if values:
-            new_values = [changes[j] * values[-1][j] for j in range(len(changes))]
+            new_values = [changes[j] * values[-1][j] for j in range(no_assets)]
+            if cash != -1:
+                individual_cash = [asset_cash * changes[cash] for asset_cash in individual_cash]
         if date < start_date:
             continue
         dates.append(date)
         if date.month != curr_month:
-            next_values = [0 for _ in range(no_assets + 1)]
+            next_values = [0 for _ in range(no_assets)]
             for j in range(no_assets):
                 to_allocate = new_values[j] if new_values else ((1 / no_assets) if not weights else weights[j])
                 if to_allocate == 0:
-                    for value in reversed(values[redistributed:]):
-                        if value[j] != 0:
-                            to_allocate = value[j]
-                            break
-                    if to_allocate == 0:
-                        to_allocate = sum(values[redistributed + 1]) * (1 / no_assets) if not weights else weights[j]
+                    to_allocate = individual_cash[j]
+                    individual_cash[j] = 0
                 if smas[j].value() < prices[j]:
                     next_values[j] = to_allocate
                 else:
-                    next_values[-1] += to_allocate
+                    individual_cash[j] += to_allocate
             new_values = next_values
             if date.month == 1:
-                redistributed = len(values)
-                to_allocate = sum(new_values)
+                to_allocate = sum(new_values) + sum(individual_cash)
+                individual_cash = [0 for _ in range(no_assets)]
                 new_values = [
                     to_allocate * ((1 / no_assets) if not weights else weights[j]) if new_values[j] != 0 else 0
                     for j in range(no_assets)]
-                new_values += [sum(
-                    to_allocate * ((1 / no_assets) if not weights else weights[j]) for j in range(no_assets) if
-                    new_values[j] == 0)]
-            allocations.append((date, [new_value / sum(new_values) for new_value in new_values]))
-        values.append(new_values)
+                for j in range(no_assets):
+                    if new_values[j] == 0:
+                        individual_cash[j] = to_allocate * ((1 / no_assets) if not weights else weights[j])
+            total_wealth = sum(new_values) + sum(individual_cash)
+            allocations.append(
+                (date, [new_value / total_wealth for new_value in new_values] + [sum(individual_cash) / total_wealth]))
+        values.append(new_values + [sum(individual_cash)])
         curr_month = date.month
     values = [sum(value) for value in values]
     return dates, values, allocations
