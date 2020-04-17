@@ -29,7 +29,7 @@ class AverageReturns:
             raise Exception("Max period exceeds maximum allowed period of 12")
 
     def add(self, date, change):
-        if len(self.year) == 365:
+        if len(self.year) == 366:
             self.year.pop(0)
         self.year.append((date, change))
 
