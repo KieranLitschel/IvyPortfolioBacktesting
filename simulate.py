@@ -22,8 +22,9 @@ class SMA:
 
 
 class AverageReturns:
-    def __init__(self):
+    def __init__(self, periods=None):
         self.year = []
+        self.periods = [3, 6, 12] if not periods else periods
 
     def add(self, date, change):
         if len(self.year) == 365:
@@ -46,7 +47,7 @@ class AverageReturns:
         return n_month_return
 
     def value(self):
-        return np.mean([self.n_month_return(n) for n in [3, 6, 12]])
+        return np.mean([self.n_month_return(n) for n in self.periods])
 
 
 def ubah(start_date, all_roi_csv, redistribute, weights=None):
