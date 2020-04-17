@@ -123,7 +123,7 @@ def timed_ivy(start_date, all_roi_csv, all_price_csv):
     return dates, values, allocations
 
 
-def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
+def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv, cash=-1, weights=None):
     roi = pd.read_csv(all_roi_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     price = pd.read_csv(all_price_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     values = []
@@ -133,10 +133,11 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
     new_values = None
     allocations = []
     curr_month = None
+    no_assets = len(roi[0]) - 1
     for i in range(len(roi)):
         date = roi[i][0]
-        changes = [roi[i][j] for j in range(1, len(roi[i]))] + [1]
-        prices = [price[i][j] for j in range(1, len(price[i]))]
+        changes = [roi[i][j] for j in range(1, no_assets + 1)] + [1 if cash == -1 else roi[i][cash]]
+        prices = [price[i][j] for j in range(1, no_assets + 1)]
         for j in range(len(prices)):
             smas[j].add(prices[j])
         if values:
@@ -145,16 +146,16 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
             continue
         dates.append(date)
         if date.month != curr_month:
-            next_values = [0, 0, 0, 0, 0, 0]
-            for j in range(5):
-                to_allocate = new_values[j] if new_values else 0.2
+            next_values = [0 for _ in range(no_assets + 1)]
+            for j in range(no_assets):
+                to_allocate = new_values[j] if new_values else ((1 / no_assets) if not weights else weights[j])
                 if to_allocate == 0:
                     for value in reversed(values[redistributed:]):
                         if value[j] != 0:
                             to_allocate = value[j]
                             break
                     if to_allocate == 0:
-                        to_allocate = sum(values[redistributed + 1]) / 5
+                        to_allocate = sum(values[redistributed + 1]) * (1 / no_assets) if not weights else weights[j]
                 if smas[j].value() < prices[j]:
                     next_values[j] = to_allocate
                 else:
@@ -162,9 +163,13 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv):
             new_values = next_values
             if date.month == 1:
                 redistributed = len(values)
-                to_allocate = sum(new_values) / 5
-                new_values = [to_allocate if new_values[j] != 0 else 0 for j in range(5)]
-                new_values += [sum(to_allocate for value in new_values if value == 0)]
+                to_allocate = sum(new_values)
+                new_values = [
+                    to_allocate * ((1 / no_assets) if not weights else weights[j]) if new_values[j] != 0 else 0
+                    for j in range(no_assets)]
+                new_values += [sum(
+                    to_allocate * ((1 / no_assets) if not weights else weights[j]) for j in range(no_assets) if
+                    new_values[j] == 0)]
             allocations.append((date, [new_value / sum(new_values) for new_value in new_values]))
         values.append(new_values)
         curr_month = date.month
