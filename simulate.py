@@ -49,10 +49,10 @@ class AverageReturns:
         return np.mean([self.n_month_return(n) for n in [3, 6, 12]])
 
 
-def ubah(start_date, all_roi_csv, redistribute):
+def ubah(start_date, all_roi_csv, redistribute, weights=None):
     roi = pd.read_csv(all_roi_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     assets = len(roi[0]) - 1
-    values = [[1 / assets for _ in range(assets)]]
+    values = [[1 / assets for _ in range(assets)] if not weights else weights]
     dates = [start_date]
     curr_month = None
     for i in range(len(roi)):
@@ -62,8 +62,9 @@ def ubah(start_date, all_roi_csv, redistribute):
             new_value = values[-1].copy()
             for j in range(len(new_value)):
                 new_value[j] *= changes[j]
-            if redistribute and date.month != curr_month and date.month == 6:
-                new_value = [sum(new_value) / len(changes) for _ in range(len(changes))]
+            if redistribute and date.month != curr_month and date.month == 1:
+                new_value = [sum(new_value) * ((1 / assets) if not weights else weights[j]) for j in
+                             range(assets)]
             values.append(new_value)
             dates.append(date)
             curr_month = date.month
