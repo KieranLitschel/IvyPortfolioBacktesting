@@ -25,10 +25,11 @@ class AverageReturns:
     def __init__(self, periods=None):
         self.year = []
         self.periods = [3, 6, 12] if not periods else periods
-        self.capacity = 31 * max(self.periods)
+        if max(self.periods) > 12:
+            raise Exception("Max period exceeds maximum allowed period of 12")
 
     def add(self, date, change):
-        if len(self.year) == self.capacity:
+        if len(self.year) == 365:
             self.year.pop(0)
         self.year.append((date, change))
 
