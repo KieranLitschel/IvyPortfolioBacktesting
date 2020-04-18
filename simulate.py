@@ -134,11 +134,11 @@ def global_tactical_asset_allocation(start_date, all_roi_csv, all_price_csv, cas
     price = pd.read_csv(all_price_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True).to_numpy()
     values = []
     dates = []
-    smas = [SMA(200) for _ in range(5)]
+    no_assets = len(roi[0]) - 1
+    smas = [SMA(200) for _ in range(no_assets)]
     new_values = None
     allocations = []
     curr_month = None
-    no_assets = len(roi[0]) - 1
     individual_cash = [0 for _ in range(no_assets)]
     for i in range(len(roi)):
         date = roi[i][0]
@@ -230,47 +230,36 @@ def tablate_returns(dates, returns):
     return df
 
 
-def plot(all_prices_csv, all_roi_csv, output_dir):
-    for year in [2012]:
-        start_date = datetime.datetime(day=2, month=4, year=year)
-        dates, ubah_perf = ubah(start_date, all_roi_csv, False)
-        plt.plot(dates, ubah_perf, label="UBAH")
-        tablate_returns(dates, ubah_perf).to_csv(os.path.join(output_dir, "UBAH.csv"))
-        dates, ubah_redis_perf = ubah(start_date, all_roi_csv, True)
-        plt.plot(dates, ubah_redis_perf, label="UBAH redistribute")
-        tablate_returns(dates, ubah_redis_perf).to_csv(os.path.join(output_dir, "UBAH redistribute.csv"))
-        dates, timed_ivy_perf, allocations_ivy = timed_ivy(start_date, all_roi_csv, all_prices_csv)
-        plt.plot(dates, timed_ivy_perf, label="Timed Ivy")
-        tablate_returns(dates, timed_ivy_perf).to_csv(os.path.join(output_dir, "Timed Ivy.csv"))
-        dates, gtaa_perf, allocations_gtaa = global_tactical_asset_allocation(start_date, all_roi_csv, all_prices_csv)
-        plt.plot(dates, gtaa_perf, label="GTAA")
-        tablate_returns(dates, gtaa_perf).to_csv(os.path.join(output_dir, "GTAA.csv"))
-        plt.legend()
-        plt.title("{} to 2020".format(year))
-        plt.savefig(os.path.join(output_dir, "Returns.png"))
-        plt.clf()
-        for allocations, name in [(allocations_ivy, "Timed Ivy"), (allocations_gtaa, "GTAA")]:
-            dates = [allocation[0] for allocation in allocations]
-            allocations = np.array([allocation[1] for allocation in allocations])
-            allocations_df = pd.DataFrame(allocations, dates,
-                                          ["Commodities", "Gov Bonds", "International", "Property", "UK", "Cash"])
-            sns.heatmap(allocations_df)
-            plt.title(name)
-            plt.tight_layout()
-            plt.savefig(os.path.join(output_dir, "{} Allocations.png".format(name)))
-            plt.clf()
-
-
-def plot_multi_manager(all_roi_csv, output_dir):
-    for year in [2006]:
-        start_date = datetime.datetime(day=1, month=3, year=year)
-        dates, ubah_perf = ubah(start_date, all_roi_csv, False)
-        plt.plot(dates, ubah_perf, label="UBAH")
-        tablate_returns(dates, ubah_perf).to_csv(os.path.join(output_dir, "UBAH.csv"))
-        dates, ubah_redis_perf = ubah(start_date, all_roi_csv, True)
-        plt.plot(dates, ubah_redis_perf, label="UBAH redistribute")
-        tablate_returns(dates, ubah_redis_perf).to_csv(os.path.join(output_dir, "UBAH redistribute.csv"))
-        plt.legend()
-        plt.title("{} to 2020".format(year))
-        plt.savefig(os.path.join(output_dir, "Returns.png"))
+def plot(all_prices_csv, all_roi_csv, output_dir, weights=None, cash=-1, periods=None, max_n=2):
+    roi = pd.read_csv(all_roi_csv, parse_dates=[0], infer_datetime_format=True, dayfirst=True)
+    start_date = roi.iloc[0]["Date"]
+    start_date = start_date.replace(year=start_date.year + 1)
+    asset_names = list(roi.columns)[1:] + ["Cash"]
+    dates, ubah_perf = ubah(start_date, all_roi_csv, False, weights=weights)
+    plt.plot(dates, ubah_perf, label="UBAH")
+    tablate_returns(dates, ubah_perf).to_csv(os.path.join(output_dir, "UBAH.csv"))
+    dates, ubah_redis_perf = ubah(start_date, all_roi_csv, True, weights=None)
+    plt.plot(dates, ubah_redis_perf, label="UBAH redistribute")
+    tablate_returns(dates, ubah_redis_perf).to_csv(os.path.join(output_dir, "UBAH redistribute.csv"))
+    dates, timed_ivy_perf, allocations_ivy = timed_ivy(start_date, all_roi_csv, all_prices_csv, cash=cash,
+                                                       periods=periods, max_n=max_n)
+    plt.plot(dates, timed_ivy_perf, label="Timed Ivy")
+    tablate_returns(dates, timed_ivy_perf).to_csv(os.path.join(output_dir, "Timed Ivy.csv"))
+    dates, gtaa_perf, allocations_gtaa = global_tactical_asset_allocation(start_date, all_roi_csv, all_prices_csv,
+                                                                          cash=cash, weights=weights)
+    plt.plot(dates, gtaa_perf, label="GTAA")
+    tablate_returns(dates, gtaa_perf).to_csv(os.path.join(output_dir, "GTAA.csv"))
+    plt.legend()
+    plt.title("{} to 2020".format(start_date.year))
+    plt.savefig(os.path.join(output_dir, "Returns.png"))
+    plt.clf()
+    for allocations, name in [(allocations_ivy, "Timed Ivy"), (allocations_gtaa, "GTAA")]:
+        dates = [allocation[0].date() for allocation in allocations]
+        allocations = np.array([allocation[1] for allocation in allocations])
+        allocations_df = pd.DataFrame(allocations, dates, asset_names)
+        fig, ax = plt.subplots(figsize=(4.5, 9))
+        fig.set_tight_layout(True)
+        sns.heatmap(allocations_df, ax=ax)
+        plt.title(name)
+        plt.savefig(os.path.join(output_dir, "{} Allocations.png".format(name)))
         plt.clf()
