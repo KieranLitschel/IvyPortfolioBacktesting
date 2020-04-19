@@ -223,7 +223,7 @@ outperformed their index over many years.
 |             | Global Large Cap 2                | LINDSELL TRAIN GLOBAL EQUITY                | 2.5%   | IE00BJSPMJ28 |                                                                      |
 |             | Global Flex Cap                   | RATHBONE GLOBAL OPPORTUNITIES               | 2.5%   | GB00BH0P2M97 |                                                                      |
 |             | Global Small Cap                  | BAILLIE GIFFORD GLOBAL DISCOVERY            | 2.5%   | GB0006059330 |                                                                      |
-|             | Emerging Markets                  | JPMORGAN EMERGING MARKETS                   | 10.0%  | GB00B1YX4S73 | FTSE All-World Emerging Index                                        |
+|             | Emerging Markets                  | JPMORGAN EMERGING MARKETS                   | 10.0%  | GB00B1YX4S73 |                                                                      |
 | Bonds       | Global Government Bonds           | ISHARES OVERSEAS GOVERNMENT BOND INDEX      | 5.0%   | GB00BPFJD859 | JP Morgan Global Government Bond Index ex UK                         |
 |             | UK Government Bonds               | LEGAL & GENERAL ALL STOCKS GILT INDEX TRUST | 5.0%   | GB00BG0QNV10 | FTSE Actuaries UK Conventional Gilts                                 |
 |             | UK Government Long Duration Bonds | VANGUARD UK LONG DURATION GILT INDEX        | 5.0%   | GB00B4M89245 | Barclays Capital U.K. Government 15+ Years Float Adjusted Bond Index |
